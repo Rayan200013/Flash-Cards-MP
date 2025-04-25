@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exam Preparation Quiz</title>
+  <script src="../jquery.min.js"></script>
+    <script src="../prefixfree.min.js"></script>
+    <script src='../underscore-min.js'></script>
+    <script src="script.js"></script>
+    <style>
+        #preloader {
+width: 50px;
+height: 50px;
+position: absolute;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+margin: auto;
+z-index: 1;
+border-radius: 10px;
+background-color: rgba(0, 0, 0, 0.5);
+}
+#preloader::after {
+content: '';
+position: absolute;
+background: url('../preload.png');
+background-size: cover;
+z-index: 1;
+top: 0;
+left: 0;
+bottom: 0;
+right: 0;
+animation: preloader_spin 1s infinite linear;
+-webkit-animation: preloader_spin 1s infinite linear;
+}
+@keyframes preloader_spin { 0% {transform: rotate(0deg);} 100% {transform: rotate(360deg);} }
+@-webkit-keyframes preloader_spin { 0% {-webkit-transform: rotate(0deg);} 100% {-webkit-transform: rotate(360deg);}}
+		
+/* CSS Scaling START */
+#id1{
+width:100%;
+height:100%;
+position:absolute;
+overflow: hidden;
+}
+#container {
+position: absolute;
+left: 5px;
+top: 5px;
+right: 5px;
+bottom: 5px;
+font-family: Poppins, sans-serif;
+}
+.page_content {
+width: 100%;
+ -ms-transform-origin: top left;
+ -webkit-transform-origin: top left;
+ transform-origin: top left;
+ position: absolute;
+}
+/* CSS Scaling END */
+    .question-media {
+      max-width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f5f5f5;
+    /* padding: 20px; */
+    margin: 0px;
+    width: 100%;
+  }
+  
+  .quiz-container {
+    width: 90%;
+    /* max-width: 600px; */
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .question-box {
+    /* background: #007bff; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  #question-text{
+    color: #000;
+  }
+  
+  .choices-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .choice-card {
+    width: 100%;
+    height: 100px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+  
+  .choice-card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+  }
+  
+  .choice-card.flipped .choice-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .choice-card-front,
+  .choice-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .choice-card-front {
+    background: #e0e0e0;
+  }
+  
+  .choice-card-back {
+    transform: rotateY(180deg);
+    color: white;
+  }
+  
+  .choice-card-back.correct {
+    background: green;
+  }
+  
+  .choice-card-back.wrong {
+    background: red;
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
+  
+  button:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  .navbar {
+    background: #007bff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .category {
+    font-size: 16px;
+  }
+  .dashboard {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    border-radius: 10px 0 0 10px;
+    height: fit-content;
+  }
+  
+  .sidebar h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding-left: 0;
+    overflow-y: auto;
+    max-height: 80vh;
+  }
+  
+  .sidebar li {
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    background-color: #34495e;
+    transition: background 0.2s;
+  }
+  
+  .sidebar li:hover {
+    background-color: #1abc9c;
+  }
+  
+  .sidebar li.answered {
+    background-color: #27ae60;
+  }
+  
+  .sidebar li.active {
+    background-color: #2980b9;
+  }
+  
+  
+  .main-content {
+    flex: 1;
+    padding-left: 20px;
+  }
+
+  .quiz-result {
+    margin-top: 20px;
+    padding: 10px;
+    background: #1abc9c;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+    
+  .quiz-result-box {
+    background: #1abc9c;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  </style>
+</head>
+<body>
+    <div id="preloader"></div>
+    <div id="id1" align="center">
+    <div id="container">
+<div class="page_content">
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <nav class="sidebar" id="history-panel">
+      <h3>Table of Content</h3>
+      <ul id="question-history-list"></ul>
+    </nav>
+
+    <!-- Main Quiz Area -->
+    <div class="main-content">
+      <div class="quiz-container">
+        <!-- Question Container -->
+        <div class="question-box">
+          <h2 id="question-text">Loading...</h2>
+          <img id="question-image" class="question-media" src="" alt="" style="display: none;">
+        </div>
+
+        <!-- Choices Container -->
+        <div class="choices-container" id="choices-container"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-container">
+          <button id="prev-btn" disabled>Previous</button>
+          <button id="next-btn" disabled>Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Json -->
+<script id="questions-json" type="application/json">
+    [
+    {
+      "question": "What is 2 + 2?",
+      "choices": ["3", "4", "5", "6"],
+      "correct": 1
+    },
+    {
+      "question": "What is the capital of Germany?",
+      "choices": ["Berlin", "Madrid", "Spain", "Rome"],
+      "correct": 0
+    },
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "image": "images/img1.webp",
+      "choices": ["Earth", "Mars", "Jupiter", "Venus"],
+      "correct": 1
+    }
+  ]
+    </script>
+
+  <script>
+    $(window).load(function(){$('#preloader').fadeOut();});
+let questions = [];
+let currentQuestionIndex = 0;
+
+// Check for saved progress
+const savedProgress = localStorage.getItem("flashcardProgress");
+if (savedProgress !== null) {
+  const shouldResume = confirm("Do you want to continue from where you left off?");
+  if (shouldResume) {
+    currentQuestionIndex = parseInt(savedProgress, 10);
+  } else {
+    localStorage.removeItem("flashcardProgress");
+  }
+}
+
+const questionText = document.getElementById("question-text");
+const choicesContainer = document.getElementById("choices-container");
+const prevButton = document.getElementById("prev-btn");
+const nextButton = document.getElementById("next-btn");
+
+const rawJSON = document.getElementById("questions-json").textContent;
+questions = JSON.parse(rawJSON);
+createHistoryPanel();
+loadQuestion();
+
+  function loadQuestion() {
+    nextButton.disabled = true;
+    const questionData = questions[currentQuestionIndex];
+  
+    // Handle image
+    const imageElement = document.getElementById("question-image");
+    if (questionData.image) {
+      imageElement.src = questionData.image;
+      imageElement.style.display = "block";
+    } else {
+      imageElement.style.display = "none";
+    }
+  
+    // Set question text
+    questionText.textContent = questionData.question;
+    choicesContainer.innerHTML = "";
+  
+    // Create choices (same as before)
+    questionData.choices.forEach((choice, index) => {
+      const choiceCard = document.createElement("div");
+      choiceCard.classList.add("choice-card");
+      choiceCard.innerHTML = `
+        <div class="choice-card-inner">
+          <div class="choice-card-front">${choice}</div>
+          <div class="choice-card-back">${choice}</div>
+        </div>
+      `;
+      choiceCard.addEventListener("click", () => checkAnswer(index, choiceCard));
+      choicesContainer.appendChild(choiceCard);
+    });
+  
+    prevButton.disabled = currentQuestionIndex === 0;
+    updateHistoryStyles();
+  }
+  
+
+function showQuizResult() {
+  const correctCount = questions.filter(q => q.isCorrect).length;
+  const totalQuestions = questions.length;
+  const scorePercent = Math.round((correctCount / totalQuestions) * 100);
+
+  let grade = "Bad";
+  if (scorePercent >= 90) grade = "Excellent";
+  else if (scorePercent >= 80) grade = "Very Good";
+  else if (scorePercent >= 70) grade = "Good";
+  else if (scorePercent >= 60) grade = "Average";
+
+  questionText.textContent = "📊 Quiz Result";
+  choicesContainer.innerHTML = `
+    <div class="quiz-result-box">
+      <p><strong>You scored:</strong> ${correctCount}/${totalQuestions} (${scorePercent}%)</p>
+      <p><strong>Grade:</strong> ${grade}</p>
+    </div>
+  `;
+
+  nextButton.style.display = "none";
+  prevButton.style.display = "none";
+
+  // Remove progress storage
+  localStorage.removeItem("flashcardProgress");
+  document.getElementById("question-image").style.display = "none";
+
+}
+
+
+function updateHistoryStyles() {
+  const historyItems = document.querySelectorAll("#question-history-list li");
+  historyItems.forEach((li, idx) => {
+    li.classList.remove("active");
+
+    // Skip the result tab (which is the last item)
+    if (idx >= questions.length) return;
+
+    if (idx === currentQuestionIndex) {
+      li.classList.add("active");
+    }
+    if (questions[idx]?.userAnswered) {
+      li.classList.add("answered");
+    }
+  });
+}
+
+
+
+function checkAnswer(selectedIndex, selectedCard) {
+  const questionData = questions[currentQuestionIndex]; 
+
+
+  questions[currentQuestionIndex].userAnswered = true;
+
+  if (selectedIndex === questionData.correct) {
+    selectedCard.querySelector(".choice-card-back").classList.add("correct");
+    questions[currentQuestionIndex].isCorrect = true; // ⬅️ Track correct
+  } else {
+    selectedCard.querySelector(".choice-card-back").classList.add("wrong");
+    questions[currentQuestionIndex].isCorrect = false; // ⬅️ Track incorrect
+  }
+
+  updateHistoryStyles();
+
+  // Flip only the selected card
+  selectedCard.classList.add("flipped");
+
+  // Apply color based on correctness
+  if (selectedIndex === questionData.correct) {
+    selectedCard.querySelector(".choice-card-back").classList.add("correct");
+  } else {
+    selectedCard.querySelector(".choice-card-back").classList.add("wrong");
+  }
+
+  // Disable further clicking on all cards
+  const choiceCards = document.querySelectorAll(".choice-card");
+  choiceCards.forEach(card => {
+    card.style.pointerEvents = "none";
+  });
+
+  // Enable the Next button after an answer is chosen
+  nextButton.disabled = false;
+}
+
+
+nextButton.addEventListener("click", () => {
+  if (currentQuestionIndex < questions.length - 1) {
+    currentQuestionIndex++;
+    loadQuestion();
+    localStorage.setItem("flashcardProgress", currentQuestionIndex.toString());
+  } else {
+   // Quiz complete — show result
+showQuizResult();
+
+// Visually activate result tab
+const historyItems = document.querySelectorAll("#question-history-list li");
+historyItems.forEach(item => item.classList.remove("active"));
+
+// Activate last li (quiz result)
+const resultTab = historyItems[historyItems.length - 1];
+if (resultTab) {
+  resultTab.classList.add("active");
+}
+
+// Clear saved progress
+localStorage.removeItem("flashcardProgress");
+
+  }
+});
+
+
+prevButton.addEventListener("click", () => {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    loadQuestion();
+  }
+  localStorage.setItem("flashcardProgress", currentQuestionIndex.toString());
+});
+
+function createHistoryPanel() {
+  const historyList = document.getElementById("question-history-list");
+  historyList.innerHTML = "";
+
+  questions.forEach((_, index) => {
+    const li = document.createElement("li");
+    li.textContent = `Question ${index + 1}`;
+    li.dataset.index = index;
+
+    li.addEventListener("click", () => {
+      currentQuestionIndex = index;
+      loadQuestion();
+    });
+
+    historyList.appendChild(li);
+  });
+
+  // ➕ Add the Quiz Result tab at the end
+  const resultTab = document.createElement("li");
+  resultTab.textContent = "📊 Quiz Result";
+  resultTab.classList.add("result-tab");
+  resultTab.addEventListener("click", () => {
+    showQuizResult();
+  });
+  historyList.appendChild(resultTab);
+}
+  </script>
+
+</body>
+</html>

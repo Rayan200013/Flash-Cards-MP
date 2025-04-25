@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exam Preparation Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .question-media {
+      max-width: 100%;
+      max-height: 200px;
+      min-height: 200px;
+      height: 100%;
+      object-fit: contain;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MAIN QUIZ AREA -->
+<div class="dashboard">
+
+<div class="main-content">
+  
+  <div class="quiz-container">
+    <header class="quiz-header">
+      <div class="header-left">
+        <img src="https://www.medical-professionals.com/wp-content/uploads/2022/04/logo-mp.webp" alt="Logo" class="logo-img" />
+      </div>
+      <div class="header-right">
+        <div class="category-title">Category: General Knowledge</div>
+        <div class="question-counter" id="question-counter">Question 1 of 3</div>
+      </div>
+    </header>
+    <div class="question-box">
+      <h2 id="question-text">No Data</h2>
+      <div class="question-image-wrapper">
+        <img id="question-image" class="question-media" src="https://www.medical-professionals.com/wp-content/uploads/2022/04/logo-mp.webp" alt="Question Image" />
+        <button id="zoomButton" title="Zoom image">
+          🔍
+        </button>
+      </div>
+    </div>
+    
+    <!-- Fullscreen Image Modal -->
+    <div id="zoomModal">
+      <div class="zoomed-image-wrapper">
+        <button id="closeZoomButton">×</button>
+        <img id="zoomedImage" src="" alt="Zoomed" />
+      </div>
+    </div>
+
+
+    <div class="choices-container" id="choices-container"></div>
+
+    <div class="nav-container">
+      <button id="prev-btn" disabled>Previous</button>
+      <button id="explanation-btn">Show Explanation</button>
+      <button id="next-btn" disabled>Next</button>
+    </div>
+  </div>
+</div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f5f5f5;
+    padding: 20px;
+  }
+  
+  .quiz-container {
+    width: 90%;
+    /* max-width: 600px; */
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .question-box {
+    /* background: #007bff; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    max-height: 200px;
+    min-height: 200px;
+    height: 100%;
+  }
+  #question-text{
+    color: #000;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: left;
+    max-width: 600px;
+  }
+  
+  .choices-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    min-height: 260px;
+  }
+  
+  .choice-card {
+    flex: 1 1 calc(45% - 20px);
+    max-width: 600px;
+    width: 100%;
+    /* height: 120px; */
+    perspective: 1000px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .choice-card:hover {
+    /* box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2); */
+    transform: scale(1.03);
+  }
+  
+  .choice-card-inner {
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1); /* buttery smooth */
+  }
+  
+  .choice-card.flipped .choice-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .choice-card-front,
+  .choice-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    box-sizing: border-box;
+    max-width: 700px;
+  }
+  
+  .choice-card-front {
+    background: #ffffff;
+    border: 2px solid #c8c3de;
+    box-shadow: 0 2px 6px rgba(12, 8, 51, 0.15);
+    user-select: none;
+  }
+  
+  .choice-card-back {
+    transform: rotateY(180deg);
+    color: white;
+    font-weight: 600;
+  }
+  
+  .choice-card-back.correct {
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+  }
+  
+  .choice-card-back.wrong {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+  }
+  
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  button {
+    border-radius: 10px;
+    border: 2px solid #0f5bff;
+    background-color: rgba(0, 0, 0, 0);
+    color: #0f5bff;
+    font-size: 16px;
+    padding: 10px 25px;
+    font-family: Quicksand, sans-serif;
+    font-weight: 600;
+    transition: background-color .2s ease-in-out, box-shadow .2s ease-in-out, color .2s ease-in-out;
+    cursor: pointer;
+    margin: 0 10px 0 0;
+    transition: background-color .3s;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  button:disabled {
+    /* background: gray; */
+    cursor: not-allowed;
+  }
+  
+  button:hover:not(:disabled) {
+    background-color: #0057b35e;
+  }
+  .navbar {
+    background: #007bff;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .category {
+    font-size: 16px;
+  }
+  .dashboard {
+    /* display: flex; */
+    margin: 0px;
+    padding: 0px;
+    max-width: 1440px;
+    margin: auto;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    border-radius: 10px 0 0 10px;
+    height: fit-content;
+  }
+  
+  .sidebar h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+ 
+  /* HEADER STYLING */
+.quiz-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  background: #f7faff;
+  border-bottom: 2px solid #ddd;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.header-left .logo-img {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+}
+
+.header-right {
+  text-align: right;
+}
+
+.category-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.question-counter {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
+
+/* FOOTER STYLING */
+.quiz-footer {
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  padding: 15px;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  transform: scale(0.8);
+  animation: popIn 0.4s ease forwards;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h3 {
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.popup-content p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #444;
+}
+
+.popup-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #999;
+  transition: color 0.2s;
+}
+
+.popup-close:hover {
+  color: #000;
+}
+
+/* Already existing animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.6) rotate(-8deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.7) rotate(-5deg);
+  }
+}
+
+.popup-content.fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+.question-image-wrapper {
+  position: relative;
+  display: inline-block;
+  max-width: 600px;
+}
+
+#zoomButton {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: 2px solid #c8c3de !important;
+  color: white;
+  font-size: 20px;
+  border: none;
+  border-radius: 50%;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  max-width: unset;
+  width: unset;
+}
+
+#zoomButton:hover {
+  background-color: #0057b3;
+  transform: scale(1.1);
+}
+
+/* Zoom modal container */
+#zoomModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Wrapper to position the close button relative to the image */
+.zoomed-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Zoomed image */
+#zoomedImage {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* Close button on the image */
+#closeZoomButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  background: transparent;
+  border: 2px solid #fff !important;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10001;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  transition: background 0.2s ease;
+  max-width: unset;
+  width: unset;
+}
+
+#closeZoomButton:hover {
+  background: #fff;
+  color: #000;
+}

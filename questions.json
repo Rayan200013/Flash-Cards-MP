@@ -1,0 +1,19 @@
+[
+    {
+      "question": "What is 2 + 2?",
+      "choices": ["3", "4", "5", "6"],
+      "correct": 1
+    },
+    {
+      "question": "What is the capital of Germany?",
+      "choices": ["Berlin", "Madrid", "Spain", "Rome"],
+      "correct": 0
+    },
+    {
+      "question": "Which planet is known as the Red Planet?",
+      "image": "images/img1.webp",
+      "choices": ["Earth", "Mars", "Jupiter", "Venus"],
+      "correct": 1
+    }
+  ]
+  
