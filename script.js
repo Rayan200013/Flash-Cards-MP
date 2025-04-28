@@ -1,9 +1,7 @@
-// Updated JS script for simplified flashcard quiz with animated explanation popup
-
 const questions = [
   {
     question: "What can be assessed by visualizing the intervertebral disc spaces in the provided radiograph?",
-    choices: ["Alignment of the vertebral bodies)", "Symmetry of the transverse processes", "Proper penetration of the radiograph", "Contour of the spinous process"],
+    choices: ["Alignment of the vertebral bodies", "Symmetry of the transverse processes", "Proper penetration of the radiograph", "Contour of the spinous process"],
     correct: 0,
     image: "images/img1.webp",
     explanation: "Patients have the right to confidentiality under HIPAA. Informed consent ensures they understand treatments and rights."
@@ -25,12 +23,18 @@ const questions = [
 
 let currentQuestionIndex = 0;
 
+// DOM elements (declare first!)
 const questionCounter = document.getElementById("question-counter");
 const questionText = document.getElementById("question-text");
 const choicesContainer = document.getElementById("choices-container");
 const prevButton = document.getElementById("prev-btn");
 const nextButton = document.getElementById("next-btn");
 const explanationBtn = document.getElementById("explanation-btn");
+const zoomButton = document.getElementById('zoomButton');
+const closeZoomButton = document.getElementById('closeZoomButton');
+const zoomModal = document.getElementById('zoomModal');
+const zoomedImage = document.getElementById('zoomedImage');
+const questionImage = document.getElementById('question-image');
 
 function loadQuestion() {
   const questionData = questions[currentQuestionIndex];
@@ -41,6 +45,7 @@ function loadQuestion() {
 
   questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
 
+  // Load choices
   questionData.choices.forEach((choice, index) => {
     const choiceCard = document.createElement("div");
     choiceCard.classList.add("choice-card");
@@ -62,18 +67,22 @@ function loadQuestion() {
     choicesContainer.appendChild(choiceCard);
   });
 
+  // Handle image and zoom button
+  if (questionData.image) {
+    questionImage.src = questionData.image;
+    questionImage.style.display = "block";
+    zoomButton.style.display = "block"; 
+  } else {
+    questionImage.style.display = "none";
+    zoomButton.style.display = "none"; 
+  }
+
+  // Disable prev/next appropriately
   prevButton.disabled = currentQuestionIndex === 0;
   nextButton.disabled = currentQuestionIndex === questions.length - 1;
-
-  const imageElement = document.getElementById("question-image");
-  if (questionData.image) {
-    imageElement.src = questionData.image;
-    imageElement.style.display = "block";
-  } else {
-    imageElement.style.display = "none";
-  }
 }
 
+// Navigation
 prevButton.addEventListener("click", () => {
   if (currentQuestionIndex > 0) {
     currentQuestionIndex--;
@@ -88,6 +97,7 @@ nextButton.addEventListener("click", () => {
   }
 });
 
+// Explanation Popup
 explanationBtn.addEventListener("click", () => {
   const questionData = questions[currentQuestionIndex];
   const popup = document.createElement("div");
@@ -105,7 +115,6 @@ explanationBtn.addEventListener("click", () => {
 
   const content = popup.querySelector(".popup-content");
 
-  // Close with fade-out
   const closePopup = () => {
     content.classList.remove("animate");
     content.classList.add("fade-out");
@@ -118,16 +127,7 @@ explanationBtn.addEventListener("click", () => {
   });
 });
 
-// Initial load
-loadQuestion();
-
-const zoomButton = document.getElementById('zoomButton');
-const closeZoomButton = document.getElementById('closeZoomButton');
-const zoomModal = document.getElementById('zoomModal');
-const zoomedImage = document.getElementById('zoomedImage');
-const questionImage = document.getElementById('question-image');
-
-// Open Full-Screen Modal with current image
+// Zoom Modal for image
 zoomButton.addEventListener('click', () => {
   if (questionImage.src) {
     zoomedImage.src = questionImage.src;
@@ -135,14 +135,15 @@ zoomButton.addEventListener('click', () => {
   }
 });
 
-// Close Full-Screen Modal (X)
 closeZoomButton.addEventListener('click', () => {
   zoomModal.style.display = 'none';
 });
 
-// Close Full-Screen Modal when clicking outside the image
 zoomModal.addEventListener('click', (event) => {
   if (event.target === zoomModal) {
     zoomModal.style.display = 'none';
   }
 });
+
+// Initial Load
+loadQuestion();
