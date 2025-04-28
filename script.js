@@ -23,7 +23,7 @@ const questions = [
 
 let currentQuestionIndex = 0;
 
-// DOM elements (declare first!)
+// Declaring all DOM Elements
 const questionCounter = document.getElementById("question-counter");
 const questionText = document.getElementById("question-text");
 const choicesContainer = document.getElementById("choices-container");
@@ -36,6 +36,7 @@ const zoomModal = document.getElementById('zoomModal');
 const zoomedImage = document.getElementById('zoomedImage');
 const questionImage = document.getElementById('question-image');
 
+// Function to load the current question STart
 function loadQuestion() {
   const questionData = questions[currentQuestionIndex];
 
@@ -45,7 +46,7 @@ function loadQuestion() {
 
   questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
 
-  // Load choices
+  // Load choices (From choice container ID and create choice cards (New divs and their styling is flex))
   questionData.choices.forEach((choice, index) => {
     const choiceCard = document.createElement("div");
     choiceCard.classList.add("choice-card");
