@@ -35,6 +35,8 @@ const closeZoomButton = document.getElementById('closeZoomButton');
 const zoomModal = document.getElementById('zoomModal');
 const zoomedImage = document.getElementById('zoomedImage');
 const questionImage = document.getElementById('question-image');
+const imageWrapper = document.getElementById('question-image-wrapper');
+
 
 // Function to load the current question STart
 function loadQuestion() {
@@ -72,10 +74,14 @@ function loadQuestion() {
   if (questionData.image) {
     questionImage.src = questionData.image;
     questionImage.style.display = "block";
-    zoomButton.style.display = "block"; 
+    zoomButton.style.display = "block";
+    imageWrapper.style.display = "inline-block"; // 🟢 Show the wrapper normally
+    questionText.style.flex = "unset"; // 🟢 Reset text width to normal
   } else {
     questionImage.style.display = "none";
-    zoomButton.style.display = "none"; 
+    zoomButton.style.display = "none";
+    imageWrapper.style.display = "none"; // 🔴 Hide the whole image wrapper
+    questionText.style.flex = "1"; // 🟢 Expand the text to take full width
   }
 
   // Disable prev/next appropriately
